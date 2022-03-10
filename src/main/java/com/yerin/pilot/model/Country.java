@@ -1,10 +1,12 @@
 package com.yerin.pilot.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date;
 
 @Getter
+@Setter
 public class Country {
     private int countryId;
     private String country;

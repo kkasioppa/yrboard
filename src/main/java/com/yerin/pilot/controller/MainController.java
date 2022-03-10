@@ -1,11 +1,16 @@
 package com.yerin.pilot.controller;
 
+import com.yerin.pilot.model.Country;
+import com.yerin.pilot.service.SakilaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -13,6 +18,19 @@ public class MainController {
     @RequestMapping("/temp")
     public String temp() {
         return "temp";
+    }
+
+    @Autowired
+    private SakilaService sakilaService;
+
+    @RequestMapping("/countrylist")
+    public ModelAndView getCountryList() {
+        ModelAndView model = new ModelAndView("countrycity");
+
+        // db에서 값 가져오기..??
+        List<Country> result = sakilaService.getCountry();
+        model.addObject("country", result);
+        return model;
     }
 
     @RequestMapping("/hello")

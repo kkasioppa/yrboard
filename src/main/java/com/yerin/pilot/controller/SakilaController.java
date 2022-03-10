@@ -23,4 +23,10 @@ public class SakilaController {
         ResponseEntity result = new ResponseEntity(countryList, HttpStatus.OK);
         return result; // new ResponseEntity(countryList, HttpStatus.OK);
     }
+
+    @RequestMapping("/cc")
+    public String getTemp() {
+        return "temp";
+    }
+
 }
