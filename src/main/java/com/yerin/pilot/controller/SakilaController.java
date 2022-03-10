@@ -1,5 +1,6 @@
 package com.yerin.pilot.controller;
 
+import com.yerin.pilot.model.City;
 import com.yerin.pilot.model.Country;
 import com.yerin.pilot.service.SakilaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,13 @@ public class SakilaController {
         List<Country> countryList = sakilaService.getCountry();
         ResponseEntity result = new ResponseEntity(countryList, HttpStatus.OK);
         return result; // new ResponseEntity(countryList, HttpStatus.OK);
+    }
+
+    @RequestMapping("/citylist")
+    public List<City> getCityList(HttpServletRequest request) {
+        String countryId = request.getParameter("countryId");
+        List<City> result = sakilaService.getCity(countryId);
+        return result;
     }
 
     @RequestMapping("/cc")

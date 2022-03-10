@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yerin.pilot.mapper.SakilaMapper">
+
+    <select id="getCountry" resultType="Country" statementType="CALLABLE">
+        select country_id as countryId, country, DATE_FORMAT(last_update, '%Y-%m-%d %T') as aaa from Country
+    </select>
+
+    <select id="getCity" resultType="City" parameterType="Map" statementType="CALLABLE">
+        select city_id as cityId, city, DATE_FORMAT(last_update, '%Y-%m-%d %T') as lastUpdate from city
+        <if test="countryId != null">
+            where country_id = #{countryId}
+        </if>
+    </select>
+</mapper>

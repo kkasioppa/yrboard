@@ -11,31 +11,73 @@
 <html>
 <head>
     <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function countryChanged() {
+            var selectedCountry = document.getElementById("selCountry");
+            var selectedValue = selectedCountry.options[selectedCountry.selectedIndex].value;
+            var selectedText = selectedCountry.options[selectedCountry.selectedIndex].text;
+
+            console.log('선택된 나라는 ' + selectedText + '이고, value 값은 ' + selectedValue + '입니다.');
+        }
+
+        function buttonClicked() {
+            var selectedCountry = document.getElementById("selCountry");
+            var selectedValue = selectedCountry.options[selectedCountry.selectedIndex].value;
+
+            $.ajax({
+                type:"POST",
+                url:"/citylist",
+                data: {
+                    countryId: selectedValue
+                },
+                success:(data) => {
+                    console.log(data);
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <%
-//    ArrayList<Country> result = (ArrayList<Country>)request.getAttribute("country");
-//
-//    for(int i = 0; i < result.size(); i++) {
-//        out.write(result.get(i).getCountry());
-//        out.write("<br>");
-//    }
-//
-//    int iSize = result.size();
-
     List<Country> result = (List<Country>) request.getAttribute("country");
-    for(int i = 0; i < result.size(); i++) {
-//        out.write(result.get(i).getCountry());
-//        out.write("<br>");
-    }
 %>
 
-<select name="selCountry">
-    <option value="1">korea</option>
-    <option value="2">usa</option>
-    <option value="2">nepal</option>
+<select id="selCountry" onchange="countryChanged()">
+<%
+    for(int i = 0; i < result.size(); i++) {
+        out.write("<option value=" + result.get(i).getCountryId() + ">" + result.get(i).getCountry() + "</option>");
+    }
+%>
 </select>
+<button onclick="buttonClicked()">도시조회</button>
+<br><br>
 
-
+<input id="hiddenResult" type="hidden">
+<%--<table border="1">--%>
+<%--    <tr>--%>
+<%--        <th>city id</th>--%>
+<%--        <th>city</th>--%>
+<%--        <th>last update</th>--%>
+<%--    </tr>--%>
+<%--<%--%>
+<%--    // loop를 돌면서.. 읽어온 city 정보를 tr/td로 그려줘야 함--%>
+<%--    for(int i = 0; i < 30; i++) {--%>
+<%--%>--%>
+<%--    <tr>--%>
+<%--        <td>0</td>--%>
+<%--        <td>dummy city</td>--%>
+<%--        <td>2022-03-09 00:00:00</td>--%>
+<%--    </tr>--%>
+<%--<%--%>
+<%--    }--%>
+<%--%>--%>
+<%--    <tr>--%>
+<%--        <td>0</td>--%>
+<%--        <td>dummy city</td>--%>
+<%--        <td>2022-03-09 00:00:00</td>--%>
+<%--    </tr>--%>
+</table>
 </body>
 </html>
