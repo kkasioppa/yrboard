@@ -1,13 +1,14 @@
 package com.yerin.pilot.controller;
 
+import com.yerin.pilot.model.City;
 import com.yerin.pilot.model.Country;
 import com.yerin.pilot.service.SakilaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,31 @@ public class MainController {
     @RequestMapping("/countrylist")
     public ModelAndView getCountryList() {
         ModelAndView model = new ModelAndView("countrycity");
-
         // db에서 값 가져오기..??
         List<Country> result = sakilaService.getCountry();
         model.addObject("country", result);
+        return model;
+    }
+
+    @RequestMapping(value="/countrycity", method = RequestMethod.GET)
+    public ModelAndView getCountryCity(HttpServletRequest request) {
+        String countryId = request.getParameter("countryId");
+
+        ModelAndView model = new ModelAndView("countrycity");
+
+        List<Country> result = sakilaService.getCountry();
+        List<City> result2 = sakilaService.getCity(countryId);
+        model.addObject("countryId", countryId);
+        model.addObject("country", result);
+        model.addObject("city", result2);
+        return model;
+    }
+
+    @RequestMapping("/aaa")
+    public ModelAndView getAaa(HttpServletRequest request) {
+        String text = request.getParameter("text");
+        ModelAndView model = new ModelAndView("aaa");
+        model.addObject("text", text);
         return model;
     }
 
@@ -62,5 +84,4 @@ public class MainController {
     public String valid() {
         return "valid";
     }
-
 }

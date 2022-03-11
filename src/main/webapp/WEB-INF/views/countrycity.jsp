@@ -1,6 +1,7 @@
 <%@ page import="com.yerin.pilot.model.Country" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.yerin.pilot.model.City" %><%--
   Created by IntelliJ IDEA.
   User: kkasioppa
   Date: 2022-03-10
@@ -37,47 +38,50 @@
                 }
             });
         }
+
+        function init() {
+            var selectedCountry = document.getElementById("selCountry");
+            selectedCountry.selectedIndex = <%=request.getAttribute("countryId")%> - 1;
+        }
     </script>
 </head>
-<body>
+<body onload="init();">
+
 <%
     List<Country> result = (List<Country>) request.getAttribute("country");
 %>
-
-<select id="selCountry" onchange="countryChanged()">
-<%
-    for(int i = 0; i < result.size(); i++) {
-        out.write("<option value=" + result.get(i).getCountryId() + ">" + result.get(i).getCountry() + "</option>");
-    }
-%>
+<form action="/countrycity" method="get">
+<select id="selCountry" name="countryId" onchange="countryChanged()">
+    <%
+        for(int i = 0; i < result.size(); i++) {
+            out.write("<option value=" + result.get(i).getCountryId() + ">" + result.get(i).getCountry() + "</option>");
+        }
+    %>
 </select>
-<button onclick="buttonClicked()">도시조회</button>
-<br><br>
+<button>도시조회</button>
+    <%=request.getAttribute("countryId")%>
 
-<input id="hiddenResult" type="hidden">
-<%--<table border="1">--%>
-<%--    <tr>--%>
-<%--        <th>city id</th>--%>
-<%--        <th>city</th>--%>
-<%--        <th>last update</th>--%>
-<%--    </tr>--%>
-<%--<%--%>
-<%--    // loop를 돌면서.. 읽어온 city 정보를 tr/td로 그려줘야 함--%>
-<%--    for(int i = 0; i < 30; i++) {--%>
-<%--%>--%>
-<%--    <tr>--%>
-<%--        <td>0</td>--%>
-<%--        <td>dummy city</td>--%>
-<%--        <td>2022-03-09 00:00:00</td>--%>
-<%--    </tr>--%>
-<%--<%--%>
-<%--    }--%>
-<%--%>--%>
-<%--    <tr>--%>
-<%--        <td>0</td>--%>
-<%--        <td>dummy city</td>--%>
-<%--        <td>2022-03-09 00:00:00</td>--%>
-<%--    </tr>--%>
-</table>
+    <table border="1">
+        <tr>
+            <th>city id</th>
+            <th>city</th>
+            <th>last update</th>
+        </tr>
+    <%
+        List<City> result2 = (List<City>) request.getAttribute("city");
+        // loop를 돌면서.. 읽어온 city 정보를 tr/td로 그려줘야 함
+        for(int i = 0; i <result2.size(); i++) {
+    %>
+        <tr>
+            <td><%=result2.get(i).getCityId()%></td>
+            <td><%=result2.get(i).getCity()%></td>
+            <td><%=result2.get(i).getLastUpdate()%></td>
+        </tr>
+    <%
+        }
+    %>
+    </table>
+</form>
+<br><br>
 </body>
 </html>
